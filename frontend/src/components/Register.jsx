@@ -74,7 +74,6 @@ function Register() {
         </div>
       </div>
     </div>
-    //To be updated
   );
 }
 
