@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { userRegister } from "../store/actions/authAction";
 
 function Register() {
+  const dispatch = useDispatch();
+
   const [state, setState] = useState({
     userName: "",
     email: "",
@@ -36,8 +40,20 @@ function Register() {
   };
 
   const register = (e) => {
+    const { userName, email, password, confirmPassword, image } = state;
     e.preventDefault();
-    console.log(state);
+    const formData = new FormData();
+
+    formData.append("userName", userName);
+    formData.append("email", email);
+
+    formData.append("password", password);
+
+    formData.append("confirmPassword", confirmPassword);
+
+    formData.append("image", image);
+
+    dispatch(userRegister(formData));
   };
 
   return (
