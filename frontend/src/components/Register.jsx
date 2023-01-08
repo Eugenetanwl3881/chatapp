@@ -1,7 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 function Register() {
+  const [state, setState] = useState({
+    userName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    image: "",
+  });
+
+  const [loadImage, setLoadImage] = useState("");
+
+  const inputHandler = (e) => {
+    setState({
+      ...state,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const fileHandler = (e) => {
+    if (e.target.files.length !== 0) {
+      setState({
+        ...state,
+        [e.target.name]: e.target.files[0],
+      });
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setLoadImage(reader.result);
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
+  };
+
+  const register = (e) => {
+    e.preventDefault();
+    console.log(state);
+  };
+
   return (
     <div className="register">
       <div className="card">
@@ -10,7 +48,7 @@ function Register() {
         </div>
 
         <div className="card-body">
-          <form>
+          <form onSubmit={register}>
             <div className="form-group">
               <label htmlFor="username">User Name</label>
               <input
@@ -18,6 +56,9 @@ function Register() {
                 className="form-control"
                 placeholder="User Name"
                 id="username"
+                onChange={inputHandler}
+                name="userName"
+                value={state.userName}
               />
             </div>
 
@@ -28,6 +69,9 @@ function Register() {
                 className="form-control"
                 placeholder="Email"
                 id="email"
+                onChange={inputHandler}
+                name="email"
+                value={state.email}
               />
             </div>
 
@@ -38,6 +82,9 @@ function Register() {
                 className="form-control"
                 placeholder="Password"
                 id="password"
+                onChange={inputHandler}
+                name="password"
+                value={state.password}
               />
             </div>
 
@@ -48,15 +95,26 @@ function Register() {
                 className="form-control"
                 placeholder="Confirm Password"
                 id="confirmPassword"
+                onChange={inputHandler}
+                name="confirmPassword"
+                value={state.confirmPassword}
               />
             </div>
 
             <div className="form-group">
               <div className="file-image">
-                <div className="image"></div>
+                <div className="image">
+                  {loadImage ? <img src={loadImage} alt="" /> : ""}
+                </div>
                 <div className="file">
                   <label htmlFor="image">Select Image</label>
-                  <input type="file" className="form-control" id="image" />
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="image"
+                    name="image"
+                    onChange={fileHandler}
+                  />
                 </div>
               </div>
             </div>
